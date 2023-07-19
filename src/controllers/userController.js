@@ -1,5 +1,4 @@
-//database
-//validation
+const { create } = require('../models/repositories/userQueries');
 
 const getAllUsers = (req, res) => {
   res.status(200).json({ message: 'get all users' });
@@ -10,8 +9,9 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  console.log(req.body);
-  res.status(201).json({ message: `create a user` });
+  const user = req.body;
+  create(user);
+  res.status(201).json({ message: `created` });
 };
 
 const editUser = (req, res) => {
