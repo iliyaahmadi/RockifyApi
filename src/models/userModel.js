@@ -4,14 +4,19 @@ const hashPassword = require('../utils/hashPass');
 class User {
   constructor(user) {
     this.id = crypto.randomUUID();
-    this.name = user.user_name;
-    this.email = user.user_email;
-    this.password = hashPassword(user.user_password);
-    this.role = user?.user_role_id ?? null;
-    this.img = user?.user_image ?? null;
+    this.user_name = user.name;
+    this.user_email = user.email;
+    this.user_password = user.password;
+    this.user_image = user?.image;
   }
   getUserInArr() {
-    return [this.id, this.name, this.email, this.password, this.role, this.img];
+    return [
+      this.id,
+      this.user_name,
+      this.user_email,
+      this.user_password,
+      this.user_image,
+    ];
   }
 }
 
