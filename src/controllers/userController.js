@@ -12,8 +12,6 @@ const getUser = (req, res) => {
 const createUser = async (req, res) => {
   let user = req.body;
   user.password = await hashPassword(user.password);
-  console.log('-----------------controller----------------------');
-  console.log(user);
   const newUser = await create(user);
   res.status(201).json({ newUser });
 };

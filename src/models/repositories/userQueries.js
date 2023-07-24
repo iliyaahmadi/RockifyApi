@@ -7,8 +7,6 @@ const UserModel = require('../userModel');
 async function create(user) {
   try {
     const userModel = new UserModel(user);
-    console.log('-----------------repo----------------------');
-    console.log(userModel);
     await pool.query(
       'insert into users(id,user_name,user_email,user_password,user_image) values($1,$2,$3,$4,$5)',
       [...userModel.getUserInArr()]
