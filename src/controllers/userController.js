@@ -2,7 +2,7 @@ const {
   create,
   fetchAll,
   fetchById,
-} = require('../models/repositories/userQueries');
+} = require('../models/repository/userQueries');
 const hashPassword = require('../utils/hashPass');
 
 const getAllUsers = async (req, res) => {

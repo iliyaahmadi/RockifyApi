@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const hashPassword = require('../utils/hashPass');
 
 class User {
   constructor(user) {
