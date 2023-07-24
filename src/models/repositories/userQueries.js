@@ -18,6 +18,27 @@ async function create(user) {
   }
 }
 
+async function fetchAll() {
+  const users = await pool.query('select * from users', []);
+  console.log(users.rows);
+  return users.rows;
+}
+
+async function fetchById(id) {
+  const user = await pool.query('select * from users where id=$1', [id]);
+  const newUser = {
+    id: user.rows[0].id,
+    name: user.rows[0].user_name,
+    email: user.rows[0].user_email,
+    password: user.rows[0].user_password,
+    image: user.rows[0].user_image,
+  };
+  const userModel = new UserModel(newUser);
+  return userModel;
+}
+
 module.exports = {
   create,
+  fetchAll,
+  fetchById,
 };
