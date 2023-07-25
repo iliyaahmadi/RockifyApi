@@ -40,7 +40,7 @@ const editUser = async (req, res) => {
     email: body.email ?? targetUser.email,
     image: body.image ?? targetUser.image,
   };
-  console.log(user)
+  console.log(user);
   const editedUser = await edit(id, user);
   res.status(200).json({ message: `edited user`, editedUser });
 };

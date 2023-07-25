@@ -4,6 +4,16 @@ const db = new Db(dbConfig);
 const pool = db.getInstance();
 const UserModel = require('../userModel');
 
+async function fetchAll() {
+  try {
+    const users = await pool.query('select * from users', []);
+    return users.rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 async function create(user) {
   try {
     const userModel = new UserModel(user);
@@ -12,16 +22,6 @@ async function create(user) {
       [...userModel.getUserInArr()]
     );
     return userModel.returnModel();
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
-
-async function fetchAll() {
-  try {
-    const users = await pool.query('select * from users', []);
-    return users.rows;
   } catch (err) {
     console.log(err);
     throw err;
