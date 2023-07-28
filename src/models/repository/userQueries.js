@@ -75,10 +75,25 @@ async function deleteById(id) {
   }
 }
 
+async function updateRole(id , roleId){
+  try {
+      const user = fetchById(id);
+      await pool.query(`UPDATE users SET "user_role_id"=$1 WHERE id=$2`, [
+      roleId,
+      id,
+    ]);
+    return user;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 module.exports = {
   create,
   fetchAll,
   fetchById,
   edit,
   deleteById,
+  updateRole,
 };

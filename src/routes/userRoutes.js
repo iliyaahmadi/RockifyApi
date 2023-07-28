@@ -5,6 +5,7 @@ const {
   editUser,
   deleteUser,
   getAllUsers,
+  updateUserRole,
 } = require('../controllers/userController');
 
 
@@ -16,5 +17,8 @@ userRoutes.route('/user/:id')
   .get(getUser)
   .put(editUser)
   .delete(deleteUser);
+
+userRoutes.route('/user/role/:id')
+  .post(updateUserRole)
 
 module.exports = userRoutes;

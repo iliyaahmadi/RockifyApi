@@ -4,6 +4,7 @@ const {
   fetchById,
   edit,
   deleteById,
+  updateRole,
 } = require('../models/repository/userQueries');
 const hashPassword = require('../utils/hashPass');
 
@@ -51,4 +52,29 @@ const deleteUser = async (req, res) => {
   res.status(200).json({ message: `deleted user`, user });
 };
 
-module.exports = { getUser, createUser, editUser, deleteUser, getAllUsers };
+const updateUserRole = async (req, res) => {
+  let id = req.params.id;
+  let roleId = req.body.role;
+  if (roleId === 'Admin') {
+    roleId = 1;
+  } else if (roleId === 'Artist') {
+    roleId = 2;
+  } else if (roleId === 'Premium') {
+    roleId = 3;
+  } else if (roleId === 'Normal') {
+    roleId = 4;
+  } else {
+    res.status(400).json({ message: `Invalid Role`, roleId });
+  }
+  const newUser = await updateRole(id, roleId);
+  res.status(200).json({ message: `Role Updated`, newUser });
+};
+
+module.exports = {
+  getUser,
+  createUser,
+  editUser,
+  deleteUser,
+  getAllUsers,
+  updateUserRole,
+};
