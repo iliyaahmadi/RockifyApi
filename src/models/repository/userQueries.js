@@ -2,7 +2,7 @@ const Db = require('../../db/database');
 const dbConfig = require('../../db/config');
 const db = new Db(dbConfig);
 const pool = db.getInstance();
-const UserModel = require('../userModel');
+const UserModel = require('../User');
 
 async function fetchAll() {
   try {
