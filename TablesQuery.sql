@@ -4,24 +4,12 @@ create table Roles(
 );
 
 create table Users(
-	ID VARCHAR(50) NOT NULL PRIMARY KEY,
+	ID VARCHAR(100) NOT NULL PRIMARY KEY,
 	User_Name VARCHAR(50) NOT NULL,
-	User_Password VARCHAR(50) NOT NULL,
+	User_Password VARCHAR(250) NOT NULL,
 	User_Email VARCHAR(50) NOT NULL,
 	User_Role_ID BIGINT REFERENCES Roles (ID),
 	User_Image BYTEA
-);
-
-create table Artists(
-	ID VARCHAR(50) NOT NULL PRIMARY KEY,
-	Artist_Name VARCHAR(50),
-	Artist_Image BYTEA,
-	User_ID VARCHAR(50) REFERENCES Users (ID)
-);
-
-create table Followers (
-	User_ID VARCHAR(50) REFERENCES Users (ID),
-	Artist_ID VARCHAR(50) REFERENCES Artists (ID)
 );
 
 create table Genres(
@@ -29,34 +17,26 @@ create table Genres(
 	Genre_Name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Albums (
-	ID VARCHAR(50) NOT NULL PRIMARY KEY,
-	Name VARCHAR(50) NOT NULL,
-	Artist_ID VARCHAR(50) REFERENCES Artists (ID),
-	Release_Date DATE,
-	Cover BYTEA
-);
-
 create table Tracks(
-	ID VARCHAR(50) NOT NULL PRIMARY KEY,
+	ID VARCHAR(100) NOT NULL PRIMARY KEY,
 	Track_Title VARCHAR(50) NOT NULL,
-	Likes BIGINT NOT NULL,
+	Filename VARCHAR(250) NOT NULL,
 	Duration INT NOT NULL,
-	Path VARCHAR(250) NOT NULL,
 	CoverUrl BYTEA,
-	Track_Artist VARCHAR(50) REFERENCES Artists (ID),
-	Track_Album VARCHAR(50) REFERENCES Albums (ID)
+	Uploaded Date NOT NULL,
+	Track_Artist VARCHAR(100) REFERENCES Users (ID),
+	Track_Genre BIGINT REFERENCES Genres (ID)
 );
 
 create table Playlist(
-	ID VARCHAR(50) NOT NULL PRIMARY KEY,
+	ID VARCHAR(100) NOT NULL PRIMARY KEY,
 	Playlist_Name VARCHAR(50) NOT NULL,
 	User_ID VARCHAR(50) REFERENCES Users(ID)
 );
 
 create table Track_Genre(
 	Genre_ID BIGINT REFERENCES Genres(ID),
-	Track_ID VARCHAR(50) REFERENCES Tracks (ID)
+	Track_ID VARCHAR(100) REFERENCES Tracks (ID)
 );
 
 create table Playlist_Track(
@@ -65,17 +45,17 @@ create table Playlist_Track(
 );
 
 create table Popular(
-	Track_ID VARCHAR(50) REFERENCES Tracks (ID),
+	Track_ID VARCHAR(100) REFERENCES Tracks (ID),
 	UNIQUE(Track_ID)
 );
 
 create table Likes(
-	Like_Date_Time date,
-	User_ID VARCHAR(50) REFERENCES Users (ID),
-	Track_ID VARCHAR(50) REFERENCES Tracks (ID)
+	User_ID VARCHAR(100) REFERENCES Users (ID),
+	Track_ID VARCHAR(100) REFERENCES Tracks (ID),
+	Like_Date_Time date
 );
 
 create table History(
-	User_ID VARCHAR(50) REFERENCES Users (ID),
-	Track_ID VARCHAR(50) REFERENCES Tracks (ID)
+	User_ID VARCHAR(100) REFERENCES Users (ID),
+	Track_ID VARCHAR(100) REFERENCES Tracks (ID)
 );
