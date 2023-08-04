@@ -6,8 +6,12 @@ const {
   deleteUser,
   getAllUsers,
   updateUserRole,
+  login,
 } = require('../controllers/userController');
 
+
+userRoutes.route('/login')
+  .post(login)
 
 userRoutes.route('/user')
   .get(getAllUsers)
