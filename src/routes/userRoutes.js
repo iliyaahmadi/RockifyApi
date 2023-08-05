@@ -7,12 +7,11 @@ const {
   getAllUsers,
   updateUserRole,
   login,
+  signup,
 } = require('../controllers/userController');
 
 
-userRoutes.route('/login')
-  .post(login)
-
+  
 userRoutes.route('/user')
   .get(getAllUsers)
   .post(createUser);
