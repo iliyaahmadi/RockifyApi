@@ -1,7 +1,8 @@
-const { findByEmail } = require('../models/repository/authQueries');
-const { create } = require('../models/repository/userQueries');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { findByEmail } = require('../models/repository/authQueries');
+const { create } = require('../models/repository/userQueries');
+const hashPassword = require('../utils/hashPass');
 
 const login = async (req, res) => {
   const email = req.body.email;
