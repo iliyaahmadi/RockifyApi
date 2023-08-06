@@ -25,11 +25,12 @@ const getTrack = async (req, res) => {
 
 const createTrack = async (req, res) => {
   const track = await Track.create({
-    title: req.body.username,
-    email: req.body.email,
-    password: hashedPass,
-    image: null,
-    role_id: req.body.role ? req.body.role : 1,
+    title: req.body.title,
+    filename: req.body.filename,
+    duration: req.body.duration,
+    cover: null,
+    genre: req.body.genre,
+    artist: req.body.artist,
   });
   res.status(201).json({
     message: `${track.title} succesfully created with id of ${track.id}`,
@@ -37,25 +38,53 @@ const createTrack = async (req, res) => {
 };
 
 const editTrack = async (req, res) => {
-  let id = req.params.id;
-  let body = req.body;
-  const targetTrack = await fetchById(id);
-  let track = {
-    title: body.title ?? targetTrack.title,
-    duration: body.duration ?? targetTrack.duration,
-    path: body.path ?? targetTrack.path,
-    cover: body.cover ?? targetTrack.cover,
-    artist: targetTrack.artist,
-    album: targetTrack.album,
-  };
-  const editedTrack = await edit(id, track);
-  res.status(200).json({ message: `Track has been Edited`, editedTrack });
+  const target = await Track.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  await Track.update(
+    {
+      title: req.body.title ?? target.title,
+      filename: req.body.email ?? target.filename,
+      duration: req.body.duration ?? target.duration,
+      genre: req.body.genre ?? target.genre,
+      artist: req.body.artist ?? target.artist,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  );
+  res.status(200).json({
+    message: `track edited`,
+    track: {
+      title: target.title,
+      filename: target.filename,
+      duration: target.duration,
+      genre: target.genre,
+      artist: target.artist,
+    },
+  });
 };
 
 const deleteTrack = async (req, res) => {
-  let id = req.params.id;
-  const track = await deleteById(id);
-  res.status(200).json({ message: `deleted track`, track });
+  const id = req.params.id;
+  Track.destroy({
+    where: {
+      id: id,
+    },
+  })
+    .then(() => {
+      res.status(200).json({ message: `deleted user with id of ${id}` });
+      return;
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err });
+      console.log(err);
+      return;
+    });
 };
 
 const likeTrack = async (req, res) => {
