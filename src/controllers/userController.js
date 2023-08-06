@@ -3,8 +3,8 @@ const User = db.user;
 const hashPassword = require('../utils/hashPass');
 
 const getAllUsers = async (req, res) => {
-  console.log(req.userId)
-  console.log(req.userRole)
+  console.log(req.userId);
+  console.log(req.userRole);
   const users = await User.findAll({
     attributes: ['username', 'email', 'createdAt', 'image'],
   });
@@ -52,7 +52,7 @@ const editUser = async (req, res) => {
   if (req.body.password) {
     hashedPass = await hashPassword(req.body.password);
   }
-  const newUser = await User.update(
+  await User.update(
     {
       username: req.body.username ?? target.username,
       email: req.body.email ?? target.email,
@@ -64,7 +64,13 @@ const editUser = async (req, res) => {
       },
     }
   );
-  res.status(200).json({ message: `edited user`, newUser });
+  res.status(200).json({
+    message: `edited user`,
+    user: {
+      username: target.username,
+      email: target.email,
+    },
+  });
 };
 
 const deleteUser = async (req, res) => {
