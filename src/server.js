@@ -1,10 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
 const app = express();
-
 const db = require('./models/index');
-const Role = db.role;
-
 
 db.sequelize.sync().then(() => {
   console.log('DB CONNECTED');

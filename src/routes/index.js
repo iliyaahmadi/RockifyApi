@@ -5,5 +5,5 @@ const authRoutes = require('./authRoutes.js');
 module.exports = function (app) {
   app.use('/api/v1', userRoutes);
   app.use('/api/v1', trackRoutes);
-  app.use('/api/v1/auth', authRoutes);
+  app.use('/api/v1', authRoutes);
 };

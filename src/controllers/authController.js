@@ -26,9 +26,17 @@ const login = async (req, res) => {
     });
   }
 
-  const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-  res.setHeader('Set-Cookie', `access-token=${accessToken}`);
-  res.status(200).json({ accessToken });
+  const token = jwt.sign(
+    { id: user.id, role: user.role_id },
+    process.env.JWT_SECRET
+  );
+  return res
+    .cookie('access_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    })
+    .status(200)
+    .json({ message: 'Logged in successfully' });
 };
 
 const signup = async (req, res) => {
@@ -52,7 +60,15 @@ const signup = async (req, res) => {
   }
 };
 
+const logout = (req, res) => {
+  return res
+    .clearCookie('access_token')
+    .status(200)
+    .json({ message: 'Successfully logged out' });
+};
+
 module.exports = {
   login,
   signup,
+  logout,
 };

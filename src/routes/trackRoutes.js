@@ -7,18 +7,21 @@ const {
   deleteTrack,
   likeTrack,
 } = require('../controllers/trackController');
+const userAuth = require('../middlewares/userAuth');
+const artistAuth = require('../middlewares/adminAuth');
+const adminAuth = require('../middlewares/adminAuth');
 
+trackRoutes
+  .route('/track')
+  .get(userAuth, getAllTracks)
+  .post(artistAuth, createTrack);
 
-trackRoutes.route('/track')
-  .get(getAllTracks)
-  .post(createTrack);
+trackRoutes
+  .route('/track/:id')
+  .get(userAuth, getTrack)
+  .put(artistAuth, editTrack)
+  .delete(adminAuth, deleteTrack);
 
-trackRoutes.route('/track/:id')
-  .get(getTrack)
-  .put(editTrack)
-  .delete(deleteTrack);
-
-trackRoutes.route('/track/like/:id')
-  .post(likeTrack)
+trackRoutes.route('/track/like/:id').post(userAuth, likeTrack);
 
 module.exports = trackRoutes;
