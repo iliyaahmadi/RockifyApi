@@ -1,47 +1,86 @@
-
+const db = require('../models');
+const User = db.user;
+const hashPassword = require('../utils/hashPass');
 
 const getAllUsers = async (req, res) => {
-  const users = await fetchAll();
+  const users = await User.findAll({
+    attributes: ['username', 'email', 'createdAt', 'image'],
+  });
   res.status(200).json(users);
 };
 
 const getUser = async (req, res) => {
-  let id = req.params.id;
-  const user = await fetchById(id);
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(200).json({ message: 'No user with that ID' });
-  }
+  User.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((user) => {
+      res.status(200).json(user);
+      return;
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err });
+      console.log(err);
+      return;
+    });
 };
 
 const createUser = async (req, res) => {
-  let user = req.body;
-  user.password = await hashPassword(user.password);
-  const newUser = await create(user);
-  res.status(201).json({ newUser });
+  const hashedPass = await hashPassword(req.body.password);
+  const user = await User.create({
+    username: req.body.username,
+    email: req.body.email,
+    password: hashedPass,
+    image: null,
+    role_id: req.body.role ? req.body.role : 1,
+  });
+  res.status(201).json({
+    message: `user ${user.username} succesfully with id of ${user.id}`,
+  });
 };
 
 const editUser = async (req, res) => {
-  let id = req.params.id;
-  let body = req.body;
-  const targetUser = await fetchById(id);
-  body.password = await hashPassword(body.password);
-  let user = {
-    name: body.name ?? targetUser.name,
-    password: body.password ?? targetUser.password,
-    email: body.email ?? targetUser.email,
-    image: body.image ?? targetUser.image,
-  };
-  console.log(user);
-  const editedUser = await edit(id, user);
-  res.status(200).json({ message: `edited user`, editedUser });
+  const target = await User.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  let hashedPass;
+  if (req.body.password) {
+    hashedPass = await hashPassword(req.body.password);
+  }
+  const newUser = await User.update(
+    {
+      username: req.body.username ?? target.username,
+      email: req.body.email ?? target.email,
+      password: hashedPass ?? target.password,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  );
+  res.status(200).json({ message: `edited user`, newUser });
 };
 
 const deleteUser = async (req, res) => {
-  let id = req.params.id;
-  const user = await deleteById(id);
-  res.status(200).json({ message: `deleted user`, user });
+  const id = req.params.id;
+  User.destroy({
+    where: {
+      id: id,
+    },
+  })
+    .then(() => {
+      res.status(200).json({ message: `deleted user with id of ${id}` });
+      return;
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err });
+      console.log(err);
+      return;
+    });
 };
 
 const updateUserRole = async (req, res) => {
@@ -58,14 +97,23 @@ const updateUserRole = async (req, res) => {
   } else {
     res.status(400).json({ message: `Invalid Role`, roleId });
   }
-  const result = await updateRole(id, roleId);
-  if (result) {
-    res.status(200).json({ message: `Role Updated` });
-  } else {
-    res.status(400).json({ message: `Invalid User` });
-  }
+  User.update(
+    { role_id: roleId },
+    {
+      where: {
+        id: id,
+      },
+    }
+  )
+    .then(() => {
+      res.status(200).json({ message: `Role Updated` });
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err });
+      console.log(err);
+      return;
+    });
 };
-
 
 module.exports = {
   getUser,

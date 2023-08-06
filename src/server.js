@@ -5,30 +5,10 @@ const app = express();
 const db = require('./models/index');
 const Role = db.role;
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log('Drop and Resync Db');
-  initial();
+
+db.sequelize.sync().then(() => {
+  console.log('DB CONNECTED');
 });
-
-function initial() {
-  Role.create({
-    id: 1,
-    name: 'user',
-  });
-  Role.create({
-    id: 2,
-    name: 'premium',
-  });
-
-  Role.create({
-    id: 3,
-    name: 'artist',
-  });
-  Role.create({
-    id: 4,
-    name: 'admin',
-  });
-}
 
 //middlewares
 require('./middlewares/index')(app);

@@ -1,24 +1,39 @@
-
+const db = require('../models');
+const Track = db.track;
 
 const getAllTracks = async (req, res) => {
-  const tracks = await fetchAll();
+  const tracks = await Track.findAll();
   res.status(200).json(tracks);
 };
 
 const getTrack = async (req, res) => {
-  let id = req.params.id;
-  const track = await fetchById(id);
-  if (track) {
-    res.status(200).json(track);
-  } else {
-    res.status(200).json({ message: 'No track with that ID' });
-  }
+  Track.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((track) => {
+      res.status(200).json(track);
+      return;
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err });
+      console.log(err);
+      return;
+    });
 };
 
 const createTrack = async (req, res) => {
-  let track = req.body;
-  const newTrack = await create(track);
-  res.status(201).json({ newTrack });
+  const track = await Track.create({
+    title: req.body.username,
+    email: req.body.email,
+    password: hashedPass,
+    image: null,
+    role_id: req.body.role ? req.body.role : 1,
+  });
+  res.status(201).json({
+    message: `${track.title} succesfully created with id of ${track.id}`,
+  });
 };
 
 const editTrack = async (req, res) => {
