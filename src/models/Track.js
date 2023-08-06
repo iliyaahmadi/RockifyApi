@@ -33,6 +33,13 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    artist: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     cover: {
       type: DataTypes.BLOB,
     },
