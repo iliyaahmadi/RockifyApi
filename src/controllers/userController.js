@@ -1,12 +1,3 @@
-const {
-  create,
-  fetchAll,
-  fetchById,
-  edit,
-  deleteById,
-  updateRole,
-} = require('../models/repository/userQueries');
-const hashPassword = require('../utils/hashPass');
 
 
 const getAllUsers = async (req, res) => {

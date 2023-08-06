@@ -1,11 +1,4 @@
-const {
-  create,
-  fetchAll,
-  fetchById,
-  edit,
-  deleteById,
-  like,
-} = require('../models/repository/trackQueries');
+
 
 const getAllTracks = async (req, res) => {
   const tracks = await fetchAll();

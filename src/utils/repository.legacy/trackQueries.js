@@ -1,8 +1,11 @@
+
+//USING SEQUALIZE INSTEAD OF ALL OF THIS
+
 const Db = require('../../db/database');
 const dbConfig = require('../../db/config');
 const db = new Db(dbConfig);
 const pool = db.getInstance();
-const TrackModel = require('../Track');
+const TrackModel = require('../../models/Track');
 
 async function fetchAll() {
   try {
@@ -105,3 +108,6 @@ module.exports = {
   deleteById,
   like,
 };
+
+
+//USING SEQUALIZE INSTEAD OF ALL OF THIS

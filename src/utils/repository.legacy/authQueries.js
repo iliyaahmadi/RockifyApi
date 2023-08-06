@@ -1,8 +1,11 @@
+
+//USING SEQUALIZE INSTEAD OF ALL OF THIS
+
 const Db = require('../../db/database');
 const dbConfig = require('../../db/config');
 const db = new Db(dbConfig);
 const pool = db.getInstance();
-const UserModel = require('../User');
+const UserModel = require('../../models/User');
 
 async function findByEmail(email) {
   try {
@@ -31,3 +34,5 @@ async function findByEmail(email) {
 module.exports = {
   findByEmail,
 };
+
+//USING SEQUALIZE INSTEAD OF ALL OF THIS
