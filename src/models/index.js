@@ -27,4 +27,11 @@ db.role.hasMany(db.user, {
   defaultValue: 1,
 });
 
+db.track.belongsToMany(db.user, {
+  through: 'likes',
+});
+db.user.belongsToMany(db.track, {
+  through: 'likes',
+});
+
 module.exports = db;

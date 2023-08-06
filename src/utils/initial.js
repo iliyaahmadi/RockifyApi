@@ -1,20 +1,20 @@
 //initial DB Connection
 
-module.exports = function initial() {
-  Role.create({
+module.exports = function initial(role) {
+  role.create({
     id: 1,
     name: 'user',
   });
-  Role.create({
+  role.create({
     id: 2,
     name: 'premium',
   });
 
-  Role.create({
+  role.create({
     id: 3,
     name: 'artist',
   });
-  Role.create({
+  role.create({
     id: 4,
     name: 'admin',
   });

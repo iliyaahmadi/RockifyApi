@@ -3,6 +3,11 @@ const dotenv = require('dotenv').config();
 const app = express();
 const db = require('./models/index');
 
+//temp
+// const initial = require('./utils/initial');
+// {force : true}
+// initial(db.role);
+
 db.sequelize.sync().then(() => {
   console.log('DB CONNECTED');
 });
