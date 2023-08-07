@@ -6,7 +6,7 @@ const getAllUsers = async (req, res) => {
   console.log(req.userId);
   console.log(req.userRole);
   const users = await User.findAll({
-    attributes: ['username', 'email', 'createdAt', 'image'],
+    attributes: ['id', 'username', 'email', 'createdAt', 'image'],
   });
   res.status(200).json(users);
 };

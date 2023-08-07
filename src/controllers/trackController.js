@@ -1,5 +1,6 @@
 const db = require('../models');
 const Track = db.track;
+const Likes = db.likes;
 
 const getAllTracks = async (req, res) => {
   const tracks = await Track.findAll();
@@ -88,9 +89,29 @@ const deleteTrack = async (req, res) => {
 };
 
 const likeTrack = async (req, res) => {
-  let id = req.params.id;
-  const newLike = await like(id);
-  res.status(200).json({ message: `track liked`, likes: newLike });
+  let trackId = req.params.id;
+  let userId = req.userId;
+  const exists = await Likes.findOne({
+    where: {
+      userId: userId,
+      trackId: trackId,
+    },
+  });
+  if (exists) {
+    await Likes.destroy({
+      where: {
+        userId: userId,
+        trackId: trackId,
+      },
+    });
+    return res.status(200).json({ message: `track removed from likes` });
+  } else {
+    await Likes.create({
+      userId: userId,
+      trackId: trackId,
+    });
+    return res.status(200).json({ message: `track liked` });
+  }
 };
 
 module.exports = {

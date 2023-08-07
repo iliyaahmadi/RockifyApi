@@ -22,6 +22,6 @@ trackRoutes
   .put(artistAuth, editTrack)
   .delete(adminAuth, deleteTrack);
 
-trackRoutes.route('/track/like/:id').post(userAuth, likeTrack);
+trackRoutes.route('/track/:id/like').post(userAuth, likeTrack);
 
 module.exports = trackRoutes;

@@ -27,6 +27,9 @@ db.role.hasMany(db.user, {
   defaultValue: 1,
 });
 
+const Likes = sequelize.define('likes');
+db.likes = Likes;
+
 db.track.belongsToMany(db.user, {
   through: 'likes',
 });
