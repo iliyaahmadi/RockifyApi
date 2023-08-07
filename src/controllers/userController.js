@@ -1,6 +1,7 @@
 const db = require('../models');
 const User = db.user;
 const hashPassword = require('../utils/hashPass');
+const fs = require('fs');
 
 const getAllUsers = async (req, res) => {
   console.log(req.userId);
@@ -12,19 +13,17 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  User.findOne({
+  await User.findOne({
     where: {
       id: req.params.id,
     },
   })
     .then((user) => {
-      res.status(200).json(user);
-      return;
+      return res.status(200).json(user);
     })
     .catch((err) => {
-      res.status(400).json({ message: err });
       console.log(err);
-      return;
+      return res.status(400).json({ message: err });
     });
 };
 
@@ -123,6 +122,49 @@ const updateUserRole = async (req, res) => {
     });
 };
 
+const uploadProfile = async (req, res) => {
+  await User.update(
+    {
+      image: req.file.path,
+    },
+    {
+      where: {
+        id: req.userId,
+      },
+    }
+  );
+  const newProfile = await User.findOne(
+    {
+      attributes: ['image'],
+    },
+    {
+      where: {
+        id: req.userId,
+      },
+    }
+  );
+  res.status(200).json({ message: 'image uploaded', image: newProfile.image });
+};
+
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.userId,
+      },
+    });
+    console.log(user);
+    if (user.image) {
+      let path = __basedir.replace(/\\src/, '//');
+      return res.sendFile(path + user.image);
+    }
+    return res.status(404).json({ msg: 'no profile' });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: err });
+  }
+};
+
 module.exports = {
   getUser,
   createUser,
@@ -130,4 +172,6 @@ module.exports = {
   deleteUser,
   getAllUsers,
   updateUserRole,
+  uploadProfile,
+  getProfile,
 };

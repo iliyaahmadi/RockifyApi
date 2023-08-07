@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const app = express();
 const db = require('./models/index');
+global.__basedir = __dirname;
 
 //temp
 // const initial = require('./utils/initial');

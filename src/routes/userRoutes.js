@@ -6,9 +6,14 @@ const {
   deleteUser,
   getAllUsers,
   updateUserRole,
+  uploadProfile,
+  getProfile,
 } = require('../controllers/userController');
 const userAuth = require('../middlewares/userAuth');
 const adminAuth = require('../middlewares/adminAuth');
+const upload = require('../utils/upload');
+
+userRoutes.route('/user/profile').get(userAuth, getProfile);
 
 userRoutes
   .route('/user')
@@ -21,6 +26,8 @@ userRoutes
   .put(userAuth, editUser)
   .delete(adminAuth, deleteUser);
 
-userRoutes.route('/user/role/:id').post(adminAuth, updateUserRole);
+userRoutes.route('/user/:id/role').patch(adminAuth, updateUserRole);
+
+userRoutes.route('/user/uploadProfile').patch(userAuth, upload, uploadProfile);
 
 module.exports = userRoutes;

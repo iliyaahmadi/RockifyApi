@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     cover: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
     },
   });
   return Track;
