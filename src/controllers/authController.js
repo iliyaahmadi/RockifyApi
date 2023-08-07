@@ -5,8 +5,8 @@ const db = require('../models');
 const User = db.user;
 
 const login = async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+  const email = req.body?.email;
+  const password = req.body?.password;
   let user, validPass;
   if (email && password) {
     user = await User.findOne({
@@ -14,8 +14,16 @@ const login = async (req, res) => {
         email: email,
       },
     });
-    console.log(user);
-    validPass = await bcrypt.compare(password, user.password);
+    if (user) {
+      validPass = await bcrypt.compare(password, user.password);
+    } else {
+      if (user === null || !validPass) {
+        return res.status(401).json({
+          accessToken: null,
+          message: 'Email or password is incorrect',
+        });
+      }
+    }
   } else {
     res.status(400).json({ message: `please enter email and password` });
   }
