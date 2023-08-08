@@ -21,10 +21,15 @@ db.sequelize = sequelize;
 db.user = require('./User.js')(sequelize, DataTypes);
 db.track = require('./Track.js')(sequelize, DataTypes);
 db.role = require('./Role.js')(sequelize, DataTypes);
+db.playlist = require('./Playlist.js')(sequelize, DataTypes);
 
 db.role.hasMany(db.user, {
   foreignKey: 'role_id',
   defaultValue: 1,
+});
+
+db.user.hasMany(db.playlist, {
+  foreignKey: 'user_id',
 });
 
 const Likes = sequelize.define('likes');
@@ -35,6 +40,16 @@ db.track.belongsToMany(db.user, {
 });
 db.user.belongsToMany(db.track, {
   through: 'likes',
+});
+
+const PlaylistTracks = sequelize.define('playlist_tracks');
+db.playlist_tracks = PlaylistTracks;
+
+db.track.belongsToMany(db.playlist, {
+  through: 'playlist_tracks',
+});
+db.playlist.belongsToMany(db.track, {
+  through: 'playlist_tracks',
 });
 
 module.exports = db;
