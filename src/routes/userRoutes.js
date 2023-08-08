@@ -11,7 +11,7 @@ const {
 } = require('../controllers/userController');
 const userAuth = require('../middlewares/userAuth');
 const adminAuth = require('../middlewares/adminAuth');
-const upload = require('../utils/upload');
+const uploadImage = require('../utils/uploadImg');
 
 userRoutes.route('/user/profile').get(userAuth, getProfile);
 
@@ -28,6 +28,6 @@ userRoutes
 
 userRoutes.route('/user/:id/role').patch(adminAuth, updateUserRole);
 
-userRoutes.route('/user/uploadProfile').patch(userAuth, upload, uploadProfile);
+userRoutes.route('/user/uploadProfile').patch(userAuth, uploadImage, uploadProfile);
 
 module.exports = userRoutes;

@@ -19,13 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    duration: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
     genre: {
       type: DataTypes.STRING,
       allowNull: false,

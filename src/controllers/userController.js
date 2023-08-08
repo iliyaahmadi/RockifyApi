@@ -133,17 +133,7 @@ const uploadProfile = async (req, res) => {
       },
     }
   );
-  const newProfile = await User.findOne(
-    {
-      attributes: ['image'],
-    },
-    {
-      where: {
-        id: req.userId,
-      },
-    }
-  );
-  res.status(200).json({ message: 'image uploaded', image: newProfile.image });
+  res.status(200).json({ message: 'image uploaded'});
 };
 
 const getProfile = async (req, res) => {

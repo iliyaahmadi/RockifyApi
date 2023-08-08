@@ -3,16 +3,23 @@ const Track = db.track;
 const Likes = db.likes;
 
 const getAllTracks = async (req, res) => {
-  const tracks = await Track.findAll();
+  const tracks = await Track.findAll({
+    attributes: ['id', 'title', 'genre', 'artist', 'createdAt', 'cover'],
+  });
   res.status(200).json(tracks);
 };
 
 const getTrack = async (req, res) => {
-  Track.findOne({
-    where: {
-      id: req.params.id,
+  Track.findOne(
+    {
+      attributes: ['id', 'title', 'genre', 'artist', 'createdAt', 'cover'],
     },
-  })
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
     .then((track) => {
       res.status(200).json(track);
       return;
@@ -25,10 +32,10 @@ const getTrack = async (req, res) => {
 };
 
 const createTrack = async (req, res) => {
+  console.log(req.file);
   const track = await Track.create({
     title: req.body.title,
-    filename: req.body.filename,
-    duration: req.body.duration,
+    filename: req.file.path,
     cover: null,
     genre: req.body.genre,
     artist: req.body.artist,
@@ -48,7 +55,6 @@ const editTrack = async (req, res) => {
     {
       title: req.body.title ?? target.title,
       filename: req.body.email ?? target.filename,
-      duration: req.body.duration ?? target.duration,
       genre: req.body.genre ?? target.genre,
       artist: req.body.artist ?? target.artist,
     },
@@ -63,7 +69,6 @@ const editTrack = async (req, res) => {
     track: {
       title: target.title,
       filename: target.filename,
-      duration: target.duration,
       genre: target.genre,
       artist: target.artist,
     },
@@ -78,7 +83,7 @@ const deleteTrack = async (req, res) => {
     },
   })
     .then(() => {
-      res.status(200).json({ message: `deleted user with id of ${id}` });
+      res.status(200).json({ message: `deleted track with id of ${id}` });
       return;
     })
     .catch((err) => {
@@ -114,6 +119,17 @@ const likeTrack = async (req, res) => {
   }
 };
 
+const getTrackAudio = async (req, res) => {
+  const track = await Track.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const file = track.filename;
+  let path = __basedir.replace(/\\src/, '//');
+  return res.sendFile(path + file);
+};
+
 module.exports = {
   getAllTracks,
   getTrack,
@@ -121,4 +137,5 @@ module.exports = {
   editTrack,
   deleteTrack,
   likeTrack,
+  getTrackAudio,
 };

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const corsOptions = {
   origin: 'http://localhost:5000',
 };
+
 module.exports = function (app) {
   app.use(cors(corsOptions));
   app.use(express.json());
@@ -12,4 +13,5 @@ module.exports = function (app) {
   app.use(cookieParser());
   //static image folder
   app.use('/Images', express.static(__basedir + './Images'));
+  app.use('/Audios', express.static(__basedir + './Audios'));
 };
