@@ -7,11 +7,13 @@ const {
   deleteTrack,
   likeTrack,
   getTrackAudio,
+  uploadTrackCover,
 } = require('../controllers/trackController');
 const userAuth = require('../middlewares/userAuth');
 const artistAuth = require('../middlewares/adminAuth');
 const adminAuth = require('../middlewares/adminAuth');
 const uploadAudio = require('../utils/uploadAudio');
+const uploadImage = require('../utils/uploadImg');
 
 trackRoutes
   .route('/track')
@@ -25,6 +27,10 @@ trackRoutes
   .delete(adminAuth, deleteTrack);
 
 trackRoutes.route('/track/:id/audio').get(getTrackAudio);
+
+trackRoutes
+  .route('/track/:id/uploadcover')
+  .patch(artistAuth, uploadImage, uploadTrackCover);
 
 trackRoutes.route('/track/:id/like').post(userAuth, likeTrack);
 

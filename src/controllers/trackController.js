@@ -130,6 +130,20 @@ const getTrackAudio = async (req, res) => {
   return res.sendFile(path + file);
 };
 
+const uploadTrackCover = async (req, res) => {
+  await Track.update(
+    {
+      cover: req.file.path,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  );
+  return res.sendStatus(200);
+};
+
 module.exports = {
   getAllTracks,
   getTrack,
@@ -138,4 +152,5 @@ module.exports = {
   deleteTrack,
   likeTrack,
   getTrackAudio,
+  uploadTrackCover,
 };
