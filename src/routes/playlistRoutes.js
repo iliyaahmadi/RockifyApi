@@ -6,6 +6,9 @@ const {
   editPlaylist,
   deletePlaylist,
   getAllUsersPlaylists,
+  getPlaylistTracks,
+  addTrackToPlaylist,
+  removeTrackFromPlaylist,
 } = require('../controllers/playlistController');
 const userAuth = require('../middlewares/userAuth');
 const adminAuth = require('../middlewares/adminAuth');
@@ -23,6 +26,10 @@ playlistRoutes
   .patch(userAuth, editPlaylist)
   .delete(userAuth, deletePlaylist);
 
-playlistRoutes.route('/playlist/:id/tracks').get(userAuth);
+playlistRoutes.route('/playlist/:id/tracks').get(getPlaylistTracks);
+
+playlistRoutes.route('/playlist/:id/add/:track').post(addTrackToPlaylist);
+
+playlistRoutes.route('/playlist/:id/remove/:track').delete(removeTrackFromPlaylist);
 
 module.exports = playlistRoutes;
