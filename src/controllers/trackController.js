@@ -119,6 +119,19 @@ const likeTrack = async (req, res) => {
   }
 };
 
+const getLikedTracks = async (req, res) => {
+  await db.likes.findAll(
+    { attributes: ['trackId'] },
+    {
+      where: {
+        userId: req.userId,
+      },
+    }
+  ).then((r) => {
+    res.status(200).json(r);
+  });
+};
+
 const getTrackAudio = async (req, res) => {
   const track = await Track.findOne({
     where: {
@@ -152,5 +165,6 @@ module.exports = {
   deleteTrack,
   likeTrack,
   getTrackAudio,
+  getLikedTracks,
   uploadTrackCover,
 };

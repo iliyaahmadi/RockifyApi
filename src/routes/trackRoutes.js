@@ -8,6 +8,7 @@ const {
   likeTrack,
   getTrackAudio,
   uploadTrackCover,
+  getLikedTracks,
 } = require('../controllers/trackController');
 const userAuth = require('../middlewares/userAuth');
 const artistAuth = require('../middlewares/adminAuth');
@@ -19,6 +20,8 @@ trackRoutes
   .route('/track')
   .get(userAuth, getAllTracks)
   .post(artistAuth, uploadAudio, createTrack);
+
+trackRoutes.route('/likes').get(userAuth, getLikedTracks);
 
 trackRoutes
   .route('/track/:id')
