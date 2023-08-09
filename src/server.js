@@ -8,7 +8,7 @@ global.__basedir = __dirname;
 // const initial = require('./utils/initial');
 // {force : true}
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync().then(() => {
   console.log('DB CONNECTED');
   // initial(db.role);
 });
