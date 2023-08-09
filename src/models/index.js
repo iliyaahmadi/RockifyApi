@@ -32,6 +32,7 @@ db.user.hasMany(db.playlist, {
   foreignKey: 'user_id',
 });
 
+//user's liked tracks table
 const Likes = sequelize.define('likes');
 db.likes = Likes;
 
@@ -42,7 +43,7 @@ db.user.belongsToMany(db.track, {
   through: 'likes',
 });
 
-
+//tracks of a user's playlsit table
 const PlaylistTracks = sequelize.define('playlist_tracks');
 db.playlist_tracks = PlaylistTracks;
 
