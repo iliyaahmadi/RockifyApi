@@ -42,6 +42,7 @@ db.user.belongsToMany(db.track, {
   through: 'likes',
 });
 
+
 const PlaylistTracks = sequelize.define('playlist_tracks');
 db.playlist_tracks = PlaylistTracks;
 
@@ -50,6 +51,17 @@ db.track.belongsToMany(db.playlist, {
 });
 db.playlist.belongsToMany(db.track, {
   through: 'playlist_tracks',
+});
+
+//history of user's listened tracks table
+const History = sequelize.define('history');
+db.history = History;
+
+db.user.belongsToMany(db.track, {
+  through: 'history',
+});
+db.track.belongsToMany(db.user, {
+  through: 'history',
 });
 
 module.exports = db;
